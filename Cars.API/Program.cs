@@ -1,3 +1,4 @@
+using Cars.Application.Cars;
 using Cars.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 
@@ -23,6 +24,12 @@ builder.Services.AddCors(opt =>
     {
         policy.AllowAnyHeader().AllowAnyMethod().WithOrigins("http://localhost:7052");
     });
+});
+
+// Register MediatR
+builder.Services.AddMediatR(cfg =>
+{
+cfg.RegisterServicesFromAssembly(typeof(List.Handler).Assembly);
 });
 
 
