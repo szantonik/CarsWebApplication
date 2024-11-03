@@ -1,5 +1,6 @@
 ﻿using Cars.Domain;
 using Cars.Infrastructure;
+using FluentValidation;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -11,12 +12,20 @@ namespace Cars.Application.Cars
 {
     public class Create
     {
-        public class Command : IRequest<Car>
+        public class CommandValidator : AbstractValidator<Command>
+        {
+            public CommandValidator()
+            {
+                RuleFor(x => x.Car).SetValidator(new CarValidator());
+            }
+        }
+
+        public class Command : IRequest<Result<Unit>>
         {
             public Car Car { get; set; }
         }
 
-        public class Handler : IRequestHandler<Command, Car>
+        public class Handler : IRequestHandler<Command, Result<Unit>>
         {
             private readonly DataContext _context;
 
@@ -25,14 +34,14 @@ namespace Cars.Application.Cars
                 _context = context;
             }
 
-            public async Task<Car> Handle(Command request, CancellationToken cancellationToken)
+            public async Task<Result<Unit>> Handle(Command request, CancellationToken cancellationToken)
             {
                 // Add new car to the database context
                 _context.Cars.Add(request.Car);
 
-                await _context.SaveChangesAsync(cancellationToken);
+                var result = await _context.SaveChangesAsync(cancellationToken) > 0;
 
-                return request.Car;
+                return Result<Unit>.Success(Unit.Value);
 
             }
         }

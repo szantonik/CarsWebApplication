@@ -1,5 +1,7 @@
 using Cars.Application.Cars;
 using Cars.Infrastructure;
+using FluentValidation;
+using FluentValidation.AspNetCore;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -31,6 +33,10 @@ builder.Services.AddMediatR(cfg =>
 {
 cfg.RegisterServicesFromAssembly(typeof(List.Handler).Assembly);
 });
+
+// FluentValidation
+builder.Services.AddFluentValidationAutoValidation();
+builder.Services.AddValidatorsFromAssemblyContaining<Create>();
 
 
 

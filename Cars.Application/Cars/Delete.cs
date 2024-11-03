@@ -11,12 +11,12 @@ namespace Cars.Application.Cars
 {
     public class Delete
     {
-        public class Command : IRequest<Unit>
+        public class Command : IRequest<Result<Unit>>
         {
             public Guid Id { get; set; }
         }
 
-        public class Handler : IRequestHandler<Command, Unit>
+        public class Handler : IRequestHandler<Command, Result<Unit>>
         {
             private readonly DataContext _context;
 
@@ -25,19 +25,15 @@ namespace Cars.Application.Cars
                 _context = context;
             }
 
-            public async Task<Unit> Handle(Command request, CancellationToken cancellationToken)
+            public async Task<Result<Unit>> Handle(Command request, CancellationToken cancellationToken)
             {
                 // Find car by id
                 var car = await _context.Cars.FindAsync(request.Id);
 
-                if (car == null)
-                {
-                    throw new Exception("Car not found");
-                }
-
                 _context.Cars.Remove(car);
-                await _context.SaveChangesAsync(cancellationToken);
-                return Unit.Value;
+                var result = await _context.SaveChangesAsync(cancellationToken) > 0;
+                if (!result) return Result<Unit>.Failure("Failed to delete the car");
+                return Result<Unit>.Success(Unit.Value);
             }
         }
     }

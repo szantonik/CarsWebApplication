@@ -1,5 +1,6 @@
 ﻿using Cars.Domain;
 using Cars.Infrastructure;
+using FluentValidation;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -11,12 +12,21 @@ namespace Cars.Application.Cars
 {
     public class Edit
     {
-        public class Command : IRequest<Unit>
+        public class CommandValidator : AbstractValidator<Command>
+        {
+            public CommandValidator()
+            {
+                RuleFor(x => x.Car).SetValidator(new CarValidator());
+            }
+        }
+
+
+        public class Command : IRequest<Result<Unit>>
         {
             public required Car Car { get; set; }
         }
 
-        public class Handler : IRequestHandler<Command, Unit>
+        public class Handler : IRequestHandler<Command, Result<Unit>>
         {
             private readonly DataContext _context;
 
@@ -25,10 +35,11 @@ namespace Cars.Application.Cars
                 _context = context;
             }
 
-            public async Task<Unit> Handle(Command request, CancellationToken cancellationToken)
+            public async Task<Result<Unit>> Handle(Command request, CancellationToken cancellationToken)
             {
                 // Fetch car from database by ID
                 var car = await _context.Cars.FindAsync(request.Car.Id);
+                if (car == null) return null;
 
                 car.Brand = request.Car.Brand ?? car.Brand;
                 car.Model = request.Car.Model ?? car.Model;
@@ -41,9 +52,10 @@ namespace Cars.Application.Cars
                 car.BodyType = request.Car.BodyType;
 
                 // Save changes
-                await _context.SaveChangesAsync();
+                var result = await _context.SaveChangesAsync() > 0;
+                if (!result) return Result<Unit>.Failure("Failed to update car");
 
-                return Unit.Value;
+                return Result<Unit>.Success(Unit.Value);
             }
         }
     }
