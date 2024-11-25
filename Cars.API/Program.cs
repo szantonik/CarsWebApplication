@@ -25,6 +25,9 @@ builder.Services.AddCors(opt =>
     opt.AddPolicy("CorsPolicy", policy =>
     {
         policy.AllowAnyHeader().AllowAnyMethod().WithOrigins("http://localhost:7052");
+        policy.AllowAnyHeader().AllowAnyMethod().WithOrigins("http://localhost:5173");
+        policy.AllowAnyHeader().AllowAnyMethod().WithOrigins("https://localhost:7052");
+        policy.AllowAnyHeader().AllowAnyMethod().WithOrigins("http://localhost:5176");
     });
 });
 
@@ -73,5 +76,6 @@ catch (Exception ex)
     logger.LogError(ex, "An error occured during migration");
 }
 
+app.UseCors("CorsPolicy");
 
 app.Run();
