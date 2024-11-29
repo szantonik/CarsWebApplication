@@ -76,5 +76,6 @@ catch (Exception ex)
     logger.LogError(ex, "An error occured during migration");
 }
 
+app.UseCors("CorsPolicy");
 
 app.Run();

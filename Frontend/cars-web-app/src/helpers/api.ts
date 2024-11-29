@@ -1,4 +1,5 @@
 import axios from "axios";
+import { Car } from "../Models/Car";
 
 const API_URL = "https://localhost:7052/api/Cars"
 
@@ -38,3 +39,23 @@ export const getCarDetails = async (id: string) => {
         }
     }
 }
+
+export const createNewCar = async (car: Car) => {
+    try {
+      const response = await axios.post(API_URL, car);
+      return response.data;
+    } catch (error: any) {
+      console.error('Error creating car:', error.response?.data || error.message);
+      throw new Error(error.response?.data || 'Failed to create car');
+    }
+  };
+
+export const editCar = async (car: Car) => {
+    try {
+      const response = await axios.put(`${API_URL}/${car.id}`, car);
+      return response.data;
+    } catch (error: any) {
+      console.error('Error editing car:', error.response?.data || error.message);
+      throw new Error(error.response?.data || 'Failed to edit car');
+    }
+  };

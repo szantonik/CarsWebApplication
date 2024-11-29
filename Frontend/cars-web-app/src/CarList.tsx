@@ -40,6 +40,7 @@ function CarList() {
                 <div key={car.id} className="car">
                     <p>{car.brand} {car.model}</p>
                     <button  onClick={() => navigate(`/cars/${car.id}`)}>Details</button>
+                    <button  onClick={() => navigate(`/edit/${car.id}`)}>Edit</button>
                 </div>
             ))}
         </div>
