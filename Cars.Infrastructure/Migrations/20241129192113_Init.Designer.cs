@@ -11,14 +11,14 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Cars.Infrastructure.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20241104141431_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20241129192113_Init")]
+    partial class Init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
-            modelBuilder.HasAnnotation("ProductVersion", "8.0.10");
+            modelBuilder.HasAnnotation("ProductVersion", "9.0.0");
 
             modelBuilder.Entity("Cars.Domain.Car", b =>
                 {

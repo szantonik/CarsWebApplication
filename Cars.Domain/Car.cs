@@ -1,7 +1,7 @@
 ﻿namespace Cars.Domain
 {
-    public enum FuelType { Petrol, Hybrid, Diesel, LPG, Electric }
-    public enum BodyType { Hatchback, Sedan, Kombi, SUV, Roadster, Coupe }
+    public enum FuelType { Petrol=1, Hybrid=2, Diesel=3, LPG=4 }
+    public enum BodyType { Hatchback=1, Sedan=2, Kombi=3, SUV=4, Roadster=5, Coupe=6 }
 
     public class Car
     {
