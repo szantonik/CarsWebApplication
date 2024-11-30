@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { BodyType, Car, FuelType } from './Models/Car';
 import { useNavigate, useParams } from 'react-router-dom';
 import { getCarDetails } from './helpers/api';
@@ -37,50 +37,54 @@ function CarDetails() {
     if (error) return <p>{error}</p>;
 
   return(
-    <div className="car-details-container">
-        <table>
-            <tbody>
-            <tr>
-                <td className="td-label">Brand</td>
-                <td>{car?.brand}</td>
-            </tr>
-            <tr>
-                <td className="td-label">Model</td>
-                <td>{car?.model}</td>
-            </tr>
-            <tr>
-                <td className="td-label">Doors number</td>
-                <td>{car?.doorsNumber}</td>
-            </tr>
-            <tr>
-                <td className="td-label">Luggage capacity</td>
-                <td>{car?.luggageCapacity}</td>
-            </tr>
-            <tr>
-                <td className="td-label">Engine capacity</td>
-                <td>{car?.engineCapacity}</td>
-            </tr>
-            <tr>
-                <td className="td-label">Production date</td>
-                <td>{car?.productionDate.substring(0,10)}</td>
-            </tr>
-            <tr>
-                <td className="td-label">Fuel type</td>
-                <td>{car && FuelType[car?.fuelType]}</td>
-            </tr>
-            <tr>
-                <td className="td-label">Fuel consumption</td>
-                <td>{car?.carFuelConsumption}</td>
-            </tr>
-            <tr>
-                <td className="td-label">Body type</td>
-                <td>{car && BodyType[car?.bodyType]}</td>
-            </tr>
-            </tbody>
-        </table>
-        <button onClick={() => navigate('/cars')}>Close</button>
-    </div>
-);
+<div className="text-white flex-col mt-2">
+  <table className="mx-auto table-auto border-collapse w-max-[1000px] w-min-[450px]">
+    <tbody>
+      <tr className="odd:bg-background-200">
+        <td className="td-label font-semibold text-lg text-gray-300 border p-2 w-1/2">Brand</td>
+        <td className="text-lg border p-2 w-1/2">{car?.brand}</td>
+      </tr>
+      <tr className="odd:bg-background-200">
+        <td className="td-label font-semibold text-lg text-gray-300 border p-2">Model</td>
+        <td className="text-lg border p-2">{car?.model}</td>
+      </tr>
+      <tr className="odd:bg-background-200">
+        <td className="td-label font-semibold text-lg text-gray-300 border p-2">Doors number</td>
+        <td className="text-lg border p-2">{car?.doorsNumber}</td>
+      </tr>
+      <tr className="odd:bg-background-200">
+        <td className="td-label font-semibold text-lg text-gray-300 border p-2">Luggage capacity</td>
+        <td className="text-lg border p-2">{car?.luggageCapacity}</td>
+      </tr>
+      <tr className="odd:bg-background-200">
+        <td className="td-label font-semibold text-lg text-gray-300 border p-2">Engine capacity</td>
+        <td className="text-lg border p-2">{car?.engineCapacity}</td>
+      </tr>
+      <tr className="odd:bg-background-200">
+        <td className="td-label font-semibold text-lg text-gray-300 border p-2">Production date</td>
+        <td className="text-lg border p-2">{car?.productionDate.substring(0, 10)}</td>
+      </tr>
+      <tr className="odd:bg-background-200">
+        <td className="td-label font-semibold text-lg text-gray-300 border p-2">Fuel type</td>
+        <td className="text-lg border p-2">{car && FuelType[car?.fuelType]}</td>
+      </tr>
+      <tr className="odd:bg-background-200">
+        <td className="td-label font-semibold text-lg text-gray-300 border p-2">Fuel consumption</td>
+        <td className="text-lg border p-2">{car?.carFuelConsumption}</td>
+      </tr>
+      <tr className="odd:bg-background-200">
+        <td className="td-label font-semibold text-lg text-gray-300 border p-2">Body type</td>
+        <td className="text-lg border p-2">{car && BodyType[car?.bodyType]}</td>
+      </tr>
+    </tbody>
+  </table>
+  <div className="flex justify-center mt-4">
+    <button onClick={() => navigate('/cars')} className="btn btn-secondary">
+      Close
+    </button>
+  </div>
+</div>
+  );
 }
 
 export default CarDetails

@@ -1,7 +1,7 @@
 import React, { FormEvent, useEffect, useState } from 'react'
 import { BodyType, Car, FuelType } from './Models/Car';
 import { createNewCar, editCar, getCarDetails } from './helpers/api';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 function CarForm() {
   const { id } = useParams<{ id: string }>();
@@ -11,8 +11,9 @@ function CarForm() {
   const  today = new Date();
   const todayString = today.getFullYear() + '-' + today.getMonth() + '-' + today.getDate();
 
+  const navigate = useNavigate();
+
   useEffect(() => {
-    console.log('Car ID:', id); // Log the id to verify
     const fetchCarDetails = async () => {
       setLoading(true);
       setError(null);
@@ -61,14 +62,6 @@ function CarForm() {
     }
   };
 
-//   const handleSubmit = (e: React.FormEvent) => {
-//     e.preventDefault();
-//     if (car) {
-//       // Zapisujemy zmiany auta (tutaj np. wywołanie API lub zapis do stanu globalnego)
-//       console.log('Updated Car:', car);
-//     }
-//   };
-
 const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     if (car) {
@@ -90,301 +83,142 @@ const handleSubmit = async (e: FormEvent) => {
   if (error) return <div>Error: {error}</div>;
 
   return car ? (
-    <div className="bg-slate-400 min-w-[200px]">
-    <h2>{id == 'new' ? 'Add car' : 'Edit car'}</h2>
-    <form onSubmit={handleSubmit} className="car-form">
-        <table>
-            <tbody>
-            <tr>
-                <td>Brand: </td>
-                <td> <input  type="text"
-                            name="brand"
-                            value={car.brand} 
-                            onChange={handleChange}
-                            required /></td>
+    <div className="bg-background m-2 p-3 rounded-lg shadow-lg min-w-[300px] mx-auto w-1/2">
+      <h2 className="text-white font-bold text-2xl text-center mb-2">{id === 'new' ? 'Add Car' : 'Edit Car'}</h2>
+      <form onSubmit={handleSubmit}>
+        <table className="table-auto mx-auto w-full">
+          <tbody>
+            <tr className="odd:bg-background-200">
+              <td className="td-label font-semibold text-gray-300 p-2">Brand: </td>
+              <td><input
+                type="text"
+                name="brand"
+                value={car.brand}
+                onChange={handleChange}
+                required
+                className="w-full p-2 border rounded-md bg-background-200"
+              /></td>
             </tr>
-            <tr>
-                <td>Model:</td>
-                <td><input  type="text"
-                        name="model"
-                        value={car.model} 
-                        onChange={handleChange}
-                        required /></td>
+            <tr className="odd:bg-background-200">
+              <td className="td-label font-semibold text-gray-300 p-2">Model:</td>
+              <td><input
+                type="text"
+                name="model"
+                value={car.model}
+                onChange={handleChange}
+                required
+                className="w-full p-2 border rounded-md bg-background"
+              /></td>
             </tr>
-            <tr>
-                <td>Doors number:</td>
-                <td><input  type="number"
-                        name="doorsNumber"
-                        value={car.doorsNumber} 
-                        onChange={handleChange}
-                        required /></td>
+            <tr className="odd:bg-background-200">
+              <td className="td-label font-semibold text-gray-300 p-2">Doors number:</td>
+              <td><input
+                type="number"
+                name="doorsNumber"
+                value={car.doorsNumber}
+                onChange={handleChange}
+                required
+                className="w-full p-2 border rounded-md bg-background-200"
+              /></td>
             </tr>
-            <tr>
-                <td>Luggage capacity [l]:</td>
-                <td><input  type="number"
-                        name="luggageCapacity"
-                        value={car.luggageCapacity} 
-                        onChange={handleChange}
-                        required /></td>
+            <tr className="odd:bg-background-200">
+              <td className="td-label font-semibold text-gray-300 p-2">Luggage capacity [l]:</td>
+              <td><input
+                type="number"
+                name="luggageCapacity"
+                value={car.luggageCapacity}
+                onChange={handleChange}
+                required
+                className="w-full p-2 border rounded-md bg-background"
+              /></td>
             </tr>
-            <tr>
-                <td>Engine capacity [cm3]:</td>
-                <td><input  type="number"
-                        name="engineCapacity"
-                        value={car.engineCapacity} 
-                        onChange={handleChange}
-                        required /></td>
+            <tr className="odd:bg-background-200">
+              <td className="td-label font-semibold text-gray-300 p-2">Engine capacity [cm3]:</td>
+              <td><input
+                type="number"
+                name="engineCapacity"
+                value={car.engineCapacity}
+                onChange={handleChange}
+                required
+                className="w-full p-2 border rounded-md bg-background-200"
+              /></td>
             </tr>
-            <tr>
-                <td>Production date:</td>
-                <td><input  type="date"
-                        name="productionDate"
-                        value={car.productionDate.substring(0,10)}
-                        max={todayString}
-                        onChange={handleChange}
-                        required /></td>
+            <tr className="odd:bg-background-200">
+              <td className="td-label font-semibold text-gray-300 p-2">Production date:</td>
+              <td><input
+                type="date"
+                name="productionDate"
+                value={car.productionDate.substring(0, 10)}
+                max={todayString}
+                onChange={handleChange}
+                required
+                className="w-full p-2 border rounded-md bg-background"
+              /></td>
             </tr>
-            <tr>
-                <td>Fuel type:</td>
-                <td><select name="fuelType"
-                        value={car.fuelType} 
-                        onChange={handleChange}
-                        required>
-                    <option value={FuelType.Petrol}>Petrol</option>
-                    <option value={FuelType.Diesel}>Diesel</option>
-                    <option value={FuelType.Hybrid}>Hybrid</option>
-                    <option value={FuelType.LPG}>LPG</option>
-                    <option value={FuelType.Electric}>Electric</option>
-                </select></td>
+            <tr className="odd:bg-background-200">
+              <td className="td-label font-semibold text-gray-300 p-2">Fuel type:</td>
+              <td><select
+                name="fuelType"
+                value={car.fuelType}
+                onChange={handleChange}
+                required
+                className="w-full p-2 border rounded-md bg-background-200"
+              >
+                <option value={FuelType.Petrol}>Petrol</option>
+                <option value={FuelType.Diesel}>Diesel</option>
+                <option value={FuelType.Hybrid}>Hybrid</option>
+                <option value={FuelType.LPG}>LPG</option>
+              </select></td>
             </tr>
-            <tr>
-                <td>Fuel consumption [l/100km]:</td>
-                <td><input  type="number"
-                        name="carFuelConsumption"
-                        value={car.carFuelConsumption} 
-                        onChange={handleChange}
-                        required /></td>
+            <tr className="odd:bg-background-200">
+              <td className="td-label font-semibold text-gray-300 p-2">Fuel consumption [l/100km]:</td>
+              <td><input
+                type="number"
+                name="carFuelConsumption"
+                value={car.carFuelConsumption}
+                onChange={handleChange}
+                required
+                className="w-full p-2 border rounded-md bg-background"
+              /></td>
             </tr>
-            <tr>
-                <td>Body type:</td>
-                <td><select name="bodyType"
-                        value={car.bodyType} 
-                        onChange={handleChange}
-                        required>
-                    <option value={BodyType.Coupe}>Coupe</option>
-                    <option value={BodyType.Hatchback}>Hatchback</option>
-                    <option value={BodyType.Kombi}>Kombi</option>
-                    <option value={BodyType.Roadster}>Roadster</option>
-                    <option value={BodyType.SUV}>SUV</option>
-                    <option value={BodyType.Sedan}>Sedan</option>
-                </select></td>
+            <tr className="odd:bg-background-200">
+              <td className="td-label font-semibold text-gray-300 p-2">Body type:</td>
+              <td><select
+                name="bodyType"
+                value={car.bodyType}
+                onChange={handleChange}
+                required
+                className="w-full p-2 border rounded-md bg-background-200"
+              >
+                <option value={BodyType.Coupe}>Coupe</option>
+                <option value={BodyType.Hatchback}>Hatchback</option>
+                <option value={BodyType.Kombi}>Kombi</option>
+                <option value={BodyType.Roadster}>Roadster</option>
+                <option value={BodyType.SUV}>SUV</option>
+                <option value={BodyType.Sedan}>Sedan</option>
+              </select></td>
             </tr>
-            </tbody>
+          </tbody>
         </table>
-        <button type="submit" className="btn-create">Save</button>
-    </form>
-</div>
+        <div className="w-full flex justify-between mt-4">
+          <button
+            type="submit"
+            className="btn-create w-4/5 py-2 btn-success text-white font-semibold rounded-md"
+          >
+            Save
+          </button>
+          <button
+            type='button'
+            className="btn-create w-1/5 py-2 btn-danger text-white font-semibold rounded-md"
+            onClick={() => navigate(-1)}
+          >
+            Cancel
+          </button>
+        </div>
+      </form>
+    </div>
   ) : (
     <div>No car data available</div>
   );
 };
 export default CarForm;
-
-
-
-// interface CarFormProps {
-//   onAddCar: (car: Car) => void;
-// }
-
-// function CarForm() {
-//   const  today = new Date();
-//     const todayString = today.getFullYear() + '-' + today.getMonth() + '-' + today.getDate();
-
-//     const [formData, setFormData] = useState({
-//         brand: '',
-//         model: '',
-//         doorsNumber: '2',
-//         luggageCapacity: '0',
-//         engineCapacity: '0',
-//         productionDate: '',
-//         fuelType: FuelType.Petrol,
-//         carFuelConsumption: '0',
-//         bodyType: BodyType.Coupe
-//     });
-
-//     // const resetForm = () => {
-//     //     setFormData({
-//     //         brand: '',
-//     //         model: '',
-//     //         doorsNumber: 2,
-//     //         luggageCapacity: 0,
-//     //         engineCapacity: 0,
-//     //         productionDate: '',
-//     //         fuelType: FuelType.Petrol,
-//     //         carFuelConsumption: 0,
-//     //         bodyType: BodyType.Coupe
-//     //     });
-//     // }
-
-//     const handleChange = (e : React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-//         const { name, value } = e.target;
-//         setFormData((prevData) => ({
-//             ...prevData, [name]: value,
-//         }));
-//     };
-
-//     // const handleSubmit = async (e: FormEvent) => {
-//     //     e.preventDefault();
-//     //     const newCar: Car = {
-//     //         id: crypto.randomUUID(),
-//     //         brand: formData.brand,
-//     //         model: formData.model,
-//     //         doorsNumber: formData.doorsNumber,
-//     //         luggageCapacity: formData.luggageCapacity,
-//     //         engineCapacity: formData.engineCapacity,
-//     //         productionDate: formData.productionDate,
-//     //         fuelType: formData.fuelType,
-//     //         carFuelConsumption: formData.carFuelConsumption,
-//     //         bodyType: formData.bodyType
-//     //     };
-//     //     // props.onAddCar(newCar);
-//     //     try {
-//     //       await saveChangesAsync(newCar);
-//     //       // resetForm();
-//     //     } catch (error) {
-//     //       console.log(error);
-//     //     }
-//     // }
-
-//     const handleSubmit = async (e: FormEvent) => {
-//         e.preventDefault();
-      
-//         const newCar: Car = {
-//           id: crypto.randomUUID(),
-//           brand: formData.brand,
-//           model: formData.model,
-//           doorsNumber: parseInt(formData.doorsNumber, 10), // Ensure numeric values
-//           luggageCapacity: parseInt(formData.luggageCapacity, 10),
-//           engineCapacity: parseInt(formData.engineCapacity, 10),
-//           fuelType: formData.fuelType as FuelType, // Ensure proper enum type
-//           productionDate: new Date(formData.productionDate).toISOString(), // Convert to ISO
-//           carFuelConsumption: parseFloat(formData.carFuelConsumption),
-//           bodyType: formData.bodyType as BodyType,
-//         };
-      
-//         try {
-//           await saveChangesAsync(newCar);
-//         } catch (error) {
-//           console.error(error);
-//         }
-//       };
-
-//     const saveChangesAsync = async (car: Car) => {
-//         try {
-//           const response = await createNewCar(car);
-//           alert(`Car created successfully: ${response}`);
-//         } catch (error) {
-//           console.error('Error creating car:', error);
-//         }
-//       };
-
-//     return(
-        // <div className="bg-slate-400 min-w-[200px]">
-        //     <h2>Add car</h2>
-        //     <form onSubmit={handleSubmit} className="car-form">
-        //         <table>
-        //             <tbody>
-        //             <tr>
-        //                 <td>Brand: </td>
-        //                 <td> <input  type="text"
-        //                             name="brand"
-        //                             value={formData.brand} 
-        //                             onChange={handleChange}
-        //                             required /></td>
-        //             </tr>
-        //             <tr>
-        //                 <td>Model:</td>
-        //                 <td><input  type="text"
-        //                         name="model"
-        //                         value={formData.model} 
-        //                         onChange={handleChange}
-        //                         required /></td>
-        //             </tr>
-        //             <tr>
-        //                 <td>Doors number:</td>
-        //                 <td><input  type="number"
-        //                         name="doorsNumber"
-        //                         value={formData.doorsNumber} 
-        //                         onChange={handleChange}
-        //                         required /></td>
-        //             </tr>
-        //             <tr>
-        //                 <td>Luggage capacity [l]:</td>
-        //                 <td><input  type="number"
-        //                         name="luggageCapacity"
-        //                         value={formData.luggageCapacity} 
-        //                         onChange={handleChange}
-        //                         required /></td>
-        //             </tr>
-        //             <tr>
-        //                 <td>Engine capacity [cm3]:</td>
-        //                 <td><input  type="number"
-        //                         name="engineCapacity"
-        //                         value={formData.engineCapacity} 
-        //                         onChange={handleChange}
-        //                         required /></td>
-        //             </tr>
-        //             <tr>
-        //                 <td>Production date:</td>
-        //                 <td><input  type="date"
-        //                         name="productionDate"
-        //                         value={formData.productionDate}
-        //                         max={todayString}
-        //                         onChange={handleChange}
-        //                         required /></td>
-        //             </tr>
-        //             <tr>
-        //                 <td>Fuel type:</td>
-        //                 <td><select name="fuelType"
-        //                         value={formData.fuelType} 
-        //                         onChange={handleChange}
-        //                         required>
-        //                     <option value={FuelType.Petrol}>Petrol</option>
-        //                     <option value={FuelType.Diesel}>Diesel</option>
-        //                     <option value={FuelType.Hybrid}>Hybrid</option>
-        //                     <option value={FuelType.LPG}>LPG</option>
-        //                     <option value={FuelType.Electric}>Electric</option>
-        //                 </select></td>
-        //             </tr>
-        //             <tr>
-        //                 <td>Fuel consumption [l/100km]:</td>
-        //                 <td><input  type="number"
-        //                         name="carFuelConsumption"
-        //                         value={formData.carFuelConsumption} 
-        //                         onChange={handleChange}
-        //                         required /></td>
-        //             </tr>
-        //             <tr>
-        //                 <td>Body type:</td>
-        //                 <td><select name="bodyType"
-        //                         value={formData.bodyType} 
-        //                         onChange={handleChange}
-        //                         required>
-        //                     <option value={BodyType.Coupe}>Coupe</option>
-        //                     <option value={BodyType.Hatchback}>Hatchback</option>
-        //                     <option value={BodyType.Kombi}>Kombi</option>
-        //                     <option value={BodyType.Roadster}>Roadster</option>
-        //                     <option value={BodyType.SUV}>SUV</option>
-        //                     <option value={BodyType.Sedan}>Sedan</option>
-        //                 </select></td>
-        //             </tr>
-        //             </tbody>
-        //         </table>
-        //         <button type="submit" className="btn-create">Create</button>
-        //     </form>
-        // </div>
-//     );
-// };
-
-
-// export default CarForm

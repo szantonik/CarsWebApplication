@@ -1,60 +1,28 @@
-// export enum FuelType{
-//     Petrol = 0,
-//     Hybrid = 1,
-//     Diesel = 2,
-//     LPG = 3,
-//     Electric = 4
-// }
+export enum FuelType{
+    Petrol = 1,
+    Hybrid = 2,
+    Diesel = 3,
+    LPG = 4,
+}
 
-// export enum BodyType{
-//     Hatchback = 0,
-//     Sedan = 1,
-//     Kombi = 2,
-//     SUV = 3,
-//     Roadster = 4,
-//     Coupe = 5
-// }
+export enum BodyType{
+    Hatchback = 1,
+    Sedan = 2,
+    Kombi = 3,
+    SUV = 4,
+    Roadster = 5,
+    Coupe = 6
+}
 
-// export interface Car{
-//     id: string,
-//     brand: string,
-//     model: string,
-//     doorsNumber: number,
-//     luggageCapacity: number,
-//     engineCapacity: number,
-//     productionDate: string,
-//     fuelType: FuelType,
-//     carFuelConsumption: number,
-//     bodyType: BodyType
-// }
-
-export enum FuelType {
-    Petrol = 'Petrol',
-    Hybrid = 'Hybrid',
-    Diesel = 'Diesel',
-    LPG = 'LPG',
-    Electric = 'Electric',
-  }
-  
-  export enum BodyType {
-    Hatchback = 'Hatchback',
-    Sedan = 'Sedan',
-    Kombi = 'Kombi',
-    SUV = 'SUV',
-    Roadster = 'Roadster',
-    Coupe = 'Coupe',
-  }
-  
-  export interface Car {
-    id: string;
-    brand: string;
-    model: string;
-    doorsNumber: number;
-    luggageCapacity: number;
-    engineCapacity: number;
-    fuelType: FuelType;
-    productionDate: string;
-    carFuelConsumption: number;
-    bodyType: BodyType;
-  }
-  
+export interface Car{
+    id: string,
+    brand: string,
+    model: string,
+    doorsNumber: number,
+    luggageCapacity: number,
+    engineCapacity: number,
+    productionDate: string,
+    fuelType: FuelType,
+    carFuelConsumption: number,
+    bodyType: BodyType
+}

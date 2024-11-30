@@ -41,21 +41,45 @@ export const getCarDetails = async (id: string) => {
 }
 
 export const createNewCar = async (car: Car) => {
+    // Serialize enums as integers
+    const carToSend = {
+        ...car,
+        fuelType: Number(car.fuelType),
+        bodyType: Number(car.bodyType),
+    };
+
     try {
-      const response = await axios.post(API_URL, car);
-      return response.data;
+        const response = await axios.post(API_URL, carToSend);
+        return response.data;
     } catch (error: any) {
-      console.error('Error creating car:', error.response?.data || error.message);
-      throw new Error(error.response?.data || 'Failed to create car');
+        console.error('Error creating car:', error.response?.data || error.message);
+        throw new Error(error.response?.data || 'Failed to create car');
     }
-  };
+};
 
 export const editCar = async (car: Car) => {
+    const carToSend = {
+        ...car,
+        fuelType: Number(car.fuelType),
+        bodyType: Number(car.bodyType),
+    };
+
     try {
-      const response = await axios.put(`${API_URL}/${car.id}`, car);
-      return response.data;
+        const response = await axios.put(`${API_URL}/${car.id}`, carToSend);
+        return response.data;
     } catch (error: any) {
-      console.error('Error editing car:', error.response?.data || error.message);
-      throw new Error(error.response?.data || 'Failed to edit car');
+        console.error('Error editing car:', error.response?.data || error.message);
+        throw new Error(error.response?.data || 'Failed to edit car');
     }
-  };
+};
+
+export const deleteCar = async (carId: string) => {
+    try {
+        const response = await axios.delete(`${API_URL}/${carId}`);
+        return response.data;
+    } catch (error: any) {
+        console.error('Error deleting car:', error.response?.data || error.message);
+        throw new Error(error.response?.data || 'Failed to delete car');
+    }
+};
+
