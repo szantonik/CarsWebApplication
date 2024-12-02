@@ -41,7 +41,6 @@ export const getCarDetails = async (id: string) => {
 }
 
 export const createNewCar = async (car: Car) => {
-    // Serialize enums as integers
     const carToSend = {
         ...car,
         fuelType: Number(car.fuelType),
@@ -50,10 +49,16 @@ export const createNewCar = async (car: Car) => {
 
     try {
         const response = await axios.post(API_URL, carToSend);
-        return response.data;
+        if (!response.data) {
+            return { status: 404, message: 'Not Found' };
+        }
+        return { status: 200, data: response.data };
     } catch (error: any) {
-        console.error('Error creating car:', error.response?.data || error.message);
-        throw new Error(error.response?.data || 'Failed to create car');
+        // console.error('Error creating car:', error.response?.data || error.message);
+        if (error.response?.status === 400) {
+            return { status: 400, message: error.response.data.errors || 'Bad Request' };
+        }
+        return { status: 500, message: 'Failed to create car' };
     }
 };
 
@@ -66,12 +71,19 @@ export const editCar = async (car: Car) => {
 
     try {
         const response = await axios.put(`${API_URL}/${car.id}`, carToSend);
-        return response.data;
+        if (!response.data) {
+            return { status: 404, message: 'Not Found' };
+        }
+        return { status: 200, data: response.data };
     } catch (error: any) {
-        console.error('Error editing car:', error.response?.data || error.message);
-        throw new Error(error.response?.data || 'Failed to edit car');
+        // console.error('Error editing car:', error.response?.data || error.message);
+        if (error.response?.status === 400) {
+            return { status: 400, message: error.response.data.errors || 'Bad Request' };
+        }
+        return { status: 500, message: 'Failed to edit car' };
     }
 };
+
 
 export const deleteCar = async (carId: string) => {
     try {

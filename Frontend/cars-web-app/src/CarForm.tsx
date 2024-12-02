@@ -62,22 +62,33 @@ function CarForm() {
     }
   };
 
-const handleSubmit = async (e: FormEvent) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     if (car) {
-      try {
-        if (id === 'new') {
-          await createNewCar(car);
-          alert('Car created successfully');
-        } else {
-          await editCar(car);
-          alert('Car updated successfully');
+        try {
+            let response;
+            if (id === 'new') {
+                response = await createNewCar(car);
+            } else {
+                response = await editCar(car);
+            }
+
+            if (response.status === 200) {
+                alert(id === 'new' ? 'Car created successfully' : 'Car updated successfully');
+            } else if (response.status === 404) {
+                alert('Car not found');
+            } else if (response.status === 400) {
+                const errors = response.message;
+                const errorMessages = Object.values(errors).flat().join('\n');
+                alert(`Validation errors:\n\n${errorMessages}`);
+            } else {
+                alert('Failed to save car');
+            }
+        } catch (error: any) {
+            alert(error.message || 'Failed to save car');
         }
-      } catch (error: any) {
-        alert(error.message || 'Failed to save car');
-      }
     }
-  };
+};
 
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error}</div>;
